@@ -3,16 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
-db = SQLAlchemy
+db = SQLAlchemy(app)
+
+app.app_context().push()
 
 class Item(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    title = 0
-    price = 0
-    size = 0
-    color = 0
-    active = 0
-
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+    size = db.Column(db.String(20), nullable=False)
+    color = db.Column(db.String(30), nullable=False)
+    active = db.Column(db.Boolean, default=True)
+    text = db.Column(db.Text, nullable=False)
 
 
 @app.route('/')
@@ -22,6 +24,10 @@ def index():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
+@app.route('/create')
+def create():
+    return render_template("create.html")
 
 
 if __name__ == "__main__":
