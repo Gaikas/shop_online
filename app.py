@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -6,7 +6,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-app.app_context().push()
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,22 +13,43 @@ class Item(db.Model):
     price = db.Column(db.Integer, nullable=False)
     size = db.Column(db.String(20), nullable=False)
     color = db.Column(db.String(30), nullable=False)
-    active = db.Column(db.Boolean, default=True)
-    text = db.Column(db.Text, nullable=False)
+    isActive = db.Column(db.Boolean, default=True)
+
+
+    def __repr__(self):
+        return self.title
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    items = Item.query.order_by(Item.price).all()
+    return render_template("index.html", data=items)
+
 
 @app.route('/about')
 def about():
     return render_template("about.html")
 
-@app.route('/create')
+
+@app.route('/create', methods=['POST', 'GET'])
 def create():
-    return render_template("create.html")
+    if request.method == "POST":
+        title = request.form['title']
+        price = request.form['price']
+        size = request.form['size']
+        color = request.form['color']
+        item = Item(title=title, price=price, size=size, color=color)
+        try:
+            db.session.add(item)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Произошла ошибка"
+    else:
+        return render_template('create.html')
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
