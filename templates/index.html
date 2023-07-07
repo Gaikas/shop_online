@@ -7,7 +7,7 @@
 {%block body%}
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
       <h1 class="display-4 fw-normal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Онлайн магазин</font></font></h1>
-      <p class="fs-5 text-body-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Быстро создайте эффективную таблицу цен для ваших потенциальных клиентов с помощью этого примера Bootstrap. </font><font style="vertical-align: inherit;">Он построен с использованием компонентов и утилит Bootstrap по умолчанию с небольшой настройкой.</font></font></p>
+      <p class="fs-5 text-body-secondary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Товары и цены</font></font></p>
     </div>
 
 
@@ -25,7 +25,7 @@
               <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{i.size}}</font></font></li>
               <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{i.color}}</font></font></li>
             </ul>
-            <button type="button" class="w-40 btn btn-lg btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">В корзину</font></font></button>
+            <a href="/buy/{{i.id}}" class="w-40 btn btn-lg btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Купить</font></font></a>
           </div>
         </div>
       </div>
